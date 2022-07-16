@@ -71,11 +71,12 @@ export const App = () => {
         setTodolists([newTodoList, ...todolists])
         setTasks({...tasks, [newTodoListID]: []})
     }
-    const changeTaskTitle = (todoListID: string, taskId: string, newValue: string) => {
-        setTasks({...tasks, [todoListID]: tasks[todoListID].map(t => t.id === taskId ? {...t, title: newValue} : t)})
+    const changeTaskTitle = (todoListID: string, taskId: string, newTitle: string) => {
+        setTasks({...tasks, [todoListID]: tasks[todoListID].map(t => t.id === taskId ? {...t, title: newTitle} : t)})
     }
-    const changeTodoListTitle = (todolistID: string, newValue: string) => {
-        setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, title: newValue} : tl))
+
+    const changeTodoListTitle = (todolistID: string, newTitle: string) => {
+        setTodolists(todolists.map(tl => tl.id === todolistID ? {...tl, title: newTitle} : tl))
     }
 
     return (
