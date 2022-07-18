@@ -54,7 +54,6 @@ export const RemoveTodoListAC = (id: string): RemoveTodoListAT => ({
 export const AddTodoListAC = (title: string): AddTodoListAT => ({
     type: 'ADD-TODOLIST',
     title: title,
-
 })
 
 export const ChangeTodoListTitleAC = (newId: string, title: string): ChangeTodoListTitleAT => ({
