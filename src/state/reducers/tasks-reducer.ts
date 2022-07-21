@@ -1,4 +1,4 @@
-import {TasksType} from "../../App";
+import {TasksStateType} from "../../App";
 import {v1} from "uuid";
 
 export type TasksReducerAT =
@@ -33,7 +33,8 @@ type ChangeTaskTitleAT = {
     newTitle: string
 }
 
-export const tasksReducer = (tasks: TasksType, action: TasksReducerAT): TasksType => {
+
+export const tasksReducer = (tasks: TasksStateType, action: TasksReducerAT): TasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK":
             return {...tasks, [action.todolistID]: tasks[action.todolistID].filter(t => t.id !== action.taskID)}
@@ -56,8 +57,6 @@ export const tasksReducer = (tasks: TasksType, action: TasksReducerAT): TasksTyp
                     title: action.newTitle
                 } : t)
             }
-
-
         default:
             return tasks
     }

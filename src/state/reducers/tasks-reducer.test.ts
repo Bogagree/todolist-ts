@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {TasksType} from "../../App";
+import {TasksStateType} from "../../App";
 import {AddTaskAC, ChangeTaskStatusAC, ChangeTaskTitleAC, RemoveTaskAC, tasksReducer} from "./tasks-reducer";
 
 test('correct task should be removed', () => {
@@ -10,7 +10,7 @@ test('correct task should be removed', () => {
     let taskID4 = v1()
     let taskID5 = v1()
 
-    const startState: TasksType = {
+    const startState: TasksStateType = {
         [todolistID1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -43,7 +43,7 @@ test('new task should be added', () => {
     let taskID1 = v1()
     let taskID2 = v1()
 
-    const startState: TasksType = {
+    const startState: TasksStateType = {
         [todolistID1]: [
             {id: taskID1, title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -72,7 +72,7 @@ test('task status should be changed', () => {
     let taskID1 = v1()
     let taskID2 = v1()
 
-    const startState: TasksType = {
+    const startState: TasksStateType = {
         [todolistID1]: [
             {id: taskID1, title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -100,7 +100,7 @@ test('task title should be changed', () => {
     let taskID1 = v1()
     let taskID2 = v1()
 
-    const startState: TasksType = {
+    const startState: TasksStateType = {
         [todolistID1]: [
             {id: taskID1, title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
