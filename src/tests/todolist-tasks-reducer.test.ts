@@ -1,7 +1,7 @@
-import {setTodolistAC, TodolistDomainType} from "../state/todolists-reducer";
+import {setTodolistAC, TodolistDomainType} from "../features/Todolists/todolists-reducer";
 import {v1} from "uuid";
-import {setTasksAC, tasksReducer} from "../state/tasks-reducer";
-import {TasksStateType} from "../App";
+import {setTasksAC, tasksReducer} from "../features/Todolists/tasks-reducer";
+import {TasksStateType} from "../app/App";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
 
 let todolistId1: string

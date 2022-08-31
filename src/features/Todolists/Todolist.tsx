@@ -1,16 +1,16 @@
 import React, {useCallback, useEffect} from 'react'
-import {AddItemForm} from './AddItemForm'
-import {EditableSpan} from './EditableSpan'
+import {AddItemForm} from '../../components/Additemform/AddItemForm'
+import {EditableSpan} from '../../components/Editablespan/EditableSpan'
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import { Delete } from '@mui/icons-material';
-import {Task} from './Task'
-import {TaskStatuses, TaskType} from './api/todolists-api'
-import {FilterValuesType} from './state/todolists-reducer'
+import {Delete} from '@mui/icons-material';
+import {Task} from './Task/Task'
+import {TaskStatuses, TaskType} from '../../api/todolists-api'
+import {FilterValuesType} from './todolists-reducer'
 import {useDispatch} from "react-redux";
-import {setTasksTC} from "./state/tasks-reducer";
+import {setTasksTC} from "./tasks-reducer";
 
-type PropsType = {
+type TodoListPropsType = {
     id: string
     title: string
     tasks: Array<TaskType>
@@ -22,10 +22,9 @@ type PropsType = {
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
-
 }
 
-export const Todolist = React.memo(function (props: PropsType) {
+export const Todolist = React.memo(function (props: TodoListPropsType) {
     console.log('Todolist called')
 
     const dispatch = useDispatch()
@@ -57,7 +56,7 @@ export const Todolist = React.memo(function (props: PropsType) {
 
     useEffect(() => {
         dispatch(setTasksTC(props.id))
-    },[])
+    }, [])
 
     return <div>
         <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
@@ -69,10 +68,10 @@ export const Todolist = React.memo(function (props: PropsType) {
         <div>
             {
                 tasksForTodolist && tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.id}
-                                          removeTask={props.removeTask}
-                                          changeTaskTitle={props.changeTaskTitle}
-                                          changeTaskStatus={props.changeTaskStatus}
-                    />)
+                                                                    removeTask={props.removeTask}
+                                                                    changeTaskTitle={props.changeTaskTitle}
+                                                                    changeTaskStatus={props.changeTaskStatus}
+                />)
             }
         </div>
         <div style={{paddingTop: '10px'}}>
