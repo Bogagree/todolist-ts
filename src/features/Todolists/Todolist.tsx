@@ -24,8 +24,8 @@ type TodoListPropsType = {
     filter: FilterValuesType
 }
 
+// export const Todolist = React.memo(function (props: TodoListPropsType) {
 export const Todolist = React.memo(function (props: TodoListPropsType) {
-    console.log('Todolist called')
 
     const dispatch = useDispatch()
 
