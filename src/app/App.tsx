@@ -10,6 +10,8 @@ import {Menu} from '@mui/icons-material';
 import {TodolistsList} from "../features/Todolists/TodolistsList";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Login} from '../features/Login/Login';
+import {LinearProgress} from '@mui/material';
+import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 
 
 function App() {
@@ -17,6 +19,7 @@ function App() {
     return (
         <BrowserRouter>
             <div className="App">
+                <ErrorSnackbar/>
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton edge="start" color="inherit" aria-label="menu">
@@ -27,6 +30,7 @@ function App() {
                         </Typography>
                         <Button color="inherit">Login</Button>
                     </Toolbar>
+                    <LinearProgress/>
                 </AppBar>
                 <Container fixed>
                     <Routes>
@@ -34,7 +38,6 @@ function App() {
                         <Route path={"/"} element={<TodolistsList/>}/>
                         <Route path={'*'} element={<h1>404: PAGE NOT FOUND</h1>}/>
                     </Routes>
-
                 </Container>
             </div>
         </BrowserRouter>

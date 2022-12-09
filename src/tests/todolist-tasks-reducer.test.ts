@@ -1,7 +1,6 @@
 import {setTodolistAC, TodolistDomainType} from "../features/Todolists/todolists-reducer";
 import {v1} from "uuid";
-import {setTasksAC, tasksReducer} from "../features/Todolists/tasks-reducer";
-import {TasksStateType} from "../app/App";
+import {setTasksAC, tasksReducer, TasksStateType} from "../features/Todolists/tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
 
 let todolistId1: string
@@ -67,8 +66,8 @@ test('tasks should be added for todolist', () => {
     const action = setTasksAC('todolistId1', tasksStartState['todolistId1'])
 
     const endTaskState = tasksReducer({
-        'todolistId1':[],
-        'todolistId2':[],
+        'todolistId1': [],
+        'todolistId2': [],
     }, action)
 
     expect(endTaskState['todolistId1'].length).toBe(3)

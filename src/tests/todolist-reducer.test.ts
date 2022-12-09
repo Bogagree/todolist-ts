@@ -1,8 +1,8 @@
 import {setTodolistAC, TodolistDomainType, todolistsReducer} from "../features/Todolists/todolists-reducer";
 import {v1} from "uuid";
 
-let todolistId1:string
-let todolistId2:string
+let todolistId1: string
+let todolistId2: string
 let startState: TodolistDomainType[]
 
 beforeEach(() => {
@@ -15,7 +15,7 @@ beforeEach(() => {
     ]
 })
 
-test ('todolist should be seted to the state', () => {
+test('todolist should be seted to the state', () => {
 
     const action = setTodolistAC(startState)
 

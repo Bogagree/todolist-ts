@@ -69,6 +69,7 @@ export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: D
             dispatch(removeTaskAC(taskId, todolistId))
         })
 }
+
 // для примера написал санку на try/catch пока не буду удалять,
 // export const removeTaskTC = (todolistId:string, taskId:string) => async (dispatch: Dispatch) => {
 //     try{
@@ -84,6 +85,7 @@ export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: D
 // }
 
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
+
     todolistsAPI.createTask(todolistId, title)
         .then((res) => {
             dispatch(addTaskAC(res.data.data.item))
