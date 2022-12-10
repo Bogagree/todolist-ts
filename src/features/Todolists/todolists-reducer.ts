@@ -15,20 +15,10 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
             return [newtodolist, ...state]
         }
         case 'CHANGE-TODOLIST-TITLE': {
-            const todolist = state.find(tl => tl.id === action.id);
-            if (todolist) {
-                // если нашёлся - изменим ему заголовок
-                todolist.title = action.title;
-            }
-            return [...state]
+            return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
         }
         case 'CHANGE-TODOLIST-FILTER': {
-            const todolist = state.find(tl => tl.id === action.id);
-            if (todolist) {
-                // если нашёлся - изменим ему заголовок
-                todolist.filter = action.filter;
-            }
-            return [...state]
+            return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
         }
         case 'SET-TODOLISTS':
             return action.todolists.map(tl => ({...tl, entityStatus: 'idle', filter: 'all'}))
@@ -52,6 +42,9 @@ export const changeTodolistTitleAC = (id: string, title: string): ChangeTodolist
 }
 export const changeTodolistFilterAC = (id: string, filter: FilterValuesType): ChangeTodolistFilterActionType => {
     return {type: 'CHANGE-TODOLIST-FILTER', id: id, filter: filter}
+}
+export const changeTodoEntityStatusAC = (id: string, entityStatus: RequestStatusType): ChangeTodoEntityStatusActionType => {
+    return {type: 'CHANGE-TODOLIST-ENTITY-STATUS', id, entityStatus}
 }
 
 //thunks
@@ -103,6 +96,11 @@ export type ChangeTodolistFilterActionType = {
     id: string
     filter: FilterValuesType
 }
+export type ChangeTodoEntityStatusActionType = {
+    type: 'CHANGE-TODOLIST-ENTITY-STATUS',
+    id: string
+    entityStatus: RequestStatusType
+}
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistDomainType = TodolistType & {
@@ -117,3 +115,4 @@ type ActionsType = RemoveTodolistActionType
     | ReturnType<typeof setTodolistAC>
     | SetErrorActionType
     | SetStatusActionType
+    | ChangeTodoEntityStatusActionType
