@@ -2,6 +2,7 @@ import {AddTodolistActionType, RemoveTodolistActionType, setTodolistAC} from './
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI} from '../../api/todolists-api'
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
+import {setError, SetErrorActionType, setStatus, SetStatusActionType} from '../../app/app-reducer';
 
 const initialState: TasksStateType = {}
 
@@ -44,6 +45,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
     }
 }
 
+// action creators
 export const removeTaskAC = (taskId: string, todolistId: string): RemoveTaskActionType => {
     return {type: 'REMOVE-TASK', taskId: taskId, todolistId: todolistId}
 }
@@ -53,23 +55,24 @@ export const addTaskAC = (task: TaskType): AddTaskActionType => {
 export const updateTaskAC = (todolistId: string, taskId: string, model: UpdateTaskDomaineModelType): UpdateTaskStatusActionType => {
     return {type: 'UPDATE-TASK', model, todolistId, taskId}
 }
-
 export const setTasksAC = (todolistId: string, tasks: TaskType[]) => ({type: 'SET-TASKS', todolistId, tasks}) as const
 
-export const setTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
+
+//thunks
+export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setStatus({status: 'loading'}))
     todolistsAPI.getTasks(todolistId)
         .then((res) => {
             dispatch(setTasksAC(todolistId, res.data.items))
+            dispatch(setStatus({status: 'succeeded'}))
         })
 }
-
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch<ActionsType>) => {
     todolistsAPI.deleteTask(todolistId, taskId)
         .then((res) => {
             dispatch(removeTaskAC(taskId, todolistId))
         })
 }
-
 // для примера написал санку на try/catch пока не буду удалять,
 // export const removeTaskTC = (todolistId:string, taskId:string) => async (dispatch: Dispatch) => {
 //     try{
@@ -83,15 +86,23 @@ export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: D
 //
 //     }
 // }
-
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
-
+    dispatch(setStatus({status: 'loading'}))
     todolistsAPI.createTask(todolistId, title)
         .then((res) => {
-            dispatch(addTaskAC(res.data.data.item))
+            if (res.data.resultCode === 0) {
+                dispatch(addTaskAC(res.data.data.item))
+                dispatch(setStatus({status: 'succeeded'}))
+            } else {
+                if (res.data.messages.length) {
+                    dispatch(setError({error: res.data.messages[0]}))
+                } else {
+                    dispatch(setError({error: 'Some error occurred'}))
+                }
+                dispatch(setStatus({status: 'failed'}))
+            }
         })
 }
-
 export const updateTasksTC = (todolistId: string, taskId: string, domainModel: UpdateTaskDomaineModelType) => (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
     const task = getState().tasks[todolistId].find(t => t.id === taskId)
     // тут беру метод find а не filter потому что нужно взять первое значение, filter пойдет до конца массива лишняя операция
@@ -106,6 +117,7 @@ export const updateTasksTC = (todolistId: string, taskId: string, domainModel: U
     }
 }
 
+// types
 export type RemoveTaskActionType = {
     type: 'REMOVE-TASK',
     todolistId: string
@@ -147,3 +159,5 @@ type ActionsType = RemoveTaskActionType | AddTaskActionType
     | RemoveTodolistActionType
     | ReturnType<typeof setTodolistAC>
     | ReturnType<typeof setTasksAC>
+    | SetErrorActionType
+    | SetStatusActionType

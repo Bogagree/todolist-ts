@@ -30,5 +30,7 @@ export type InitialStateType = {
     error: string | null
 }
 
-type ActionsType = | ReturnType<typeof setError>
-    | ReturnType<typeof setStatus>
+export type SetErrorActionType = ReturnType<typeof setError>
+export type SetStatusActionType = ReturnType<typeof setStatus>
+
+type ActionsType = SetErrorActionType | SetStatusActionType

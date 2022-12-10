@@ -1,4 +1,4 @@
-import {forwardRef, SyntheticEvent, useState} from 'react';
+import {forwardRef, SyntheticEvent} from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useAppSelector} from '../../app/store';
@@ -10,7 +10,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref,)
 });
 
 export function ErrorSnackbar() {
-    const [open, setOpen] = useState(true);
+    // const [open, setOpen] = useState(true);
 
     const error = useAppSelector(state => state.app.error)
     const dispatch = useDispatch()
@@ -26,7 +26,7 @@ export function ErrorSnackbar() {
     };
 
     return (
-        <Snackbar open={isOpen} autoHideDuration={3000} onClose={handleClose}>
+        <Snackbar open={isOpen} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
                 {error}
             </Alert>

@@ -6,7 +6,7 @@ import {
     changeTodolistTitleTC,
     createTodolistTC,
     FilterValuesType,
-    getTodolists,
+    fetchTodolists,
     removeTodolistTC,
     TodolistDomainType
 } from "./todolists-reducer";
@@ -23,7 +23,7 @@ export const TodolistsList: React.FC = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getTodolists)
+        dispatch(fetchTodolists)
     }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {

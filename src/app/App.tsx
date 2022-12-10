@@ -12,9 +12,12 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {Login} from '../features/Login/Login';
 import {LinearProgress} from '@mui/material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
+import {useAppSelector} from './store';
 
 
 function App() {
+
+    const status = useAppSelector(state => state.app.status)
 
     return (
         <BrowserRouter>
@@ -30,7 +33,7 @@ function App() {
                         </Typography>
                         <Button color="inherit">Login</Button>
                     </Toolbar>
-                    <LinearProgress/>
+                    {status === 'loading' && <LinearProgress/>}
                 </AppBar>
                 <Container fixed>
                     <Routes>
