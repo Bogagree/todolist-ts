@@ -24,39 +24,39 @@ export const TodolistsList: React.FC = () => {
 
     useEffect(() => {
         dispatch(fetchTodolists)
-    }, [])
+    }, [dispatch])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
         dispatch(removeTaskTC(todolistId, id));
-    }, []);
+    }, [dispatch]);
 
     const addTask = useCallback(function (title: string, todolistId: string) {
         dispatch(addTaskTC(todolistId, title));
-    }, []);
+    }, [dispatch]);
 
     const changeTaskStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
         dispatch(updateTasksTC(todolistId, id, {status}));
-    }, []);
+    }, [dispatch]);
 
     const changeTaskTitle = useCallback(function (id: string, title: string, todolistId: string) {
         const thunk = updateTasksTC(todolistId, id, {title});
         dispatch(thunk);
-    }, []);
+    }, [dispatch]);
 
     const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
         const action = changeTodolistFilterAC(todolistId, value);
         dispatch(action);
-    }, []);
+    }, [dispatch]);
 
     const removeTodolist = useCallback(function (id: string) {
         const thunk = removeTodolistTC(id);
         dispatch(thunk);
-    }, []);
+    }, [dispatch]);
 
     const changeTodolistTitle = useCallback(function (id: string, title: string) {
         const thunk = changeTodolistTitleTC(id, title);
         dispatch(thunk);
-    }, []);
+    }, [dispatch]);
 
     const addTodolist = useCallback((title: string) => {
         const thunk = createTodolistTC(title);
@@ -75,14 +75,12 @@ export const TodolistsList: React.FC = () => {
                 return <Grid item key={tl.id}>
                     <Paper style={{padding: '10px'}}>
                         <Todolist
-                            id={tl.id}
-                            title={tl.title}
+                            todolist={tl}
                             tasks={allTodolistTasks}
                             removeTask={removeTask}
                             changeFilter={changeFilter}
                             addTask={addTask}
                             changeTaskStatus={changeTaskStatus}
-                            filter={tl.filter}
                             removeTodolist={removeTodolist}
                             changeTaskTitle={changeTaskTitle}
                             changeTodolistTitle={changeTodolistTitle}
