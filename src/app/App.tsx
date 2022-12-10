@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import {Menu} from '@mui/icons-material';
 import {TodolistsList} from "../features/Todolists/TodolistsList";
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, HashRouter, Route, Routes} from 'react-router-dom';
 import {Login} from '../features/Login/Login';
 import {LinearProgress} from '@mui/material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
