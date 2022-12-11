@@ -16,6 +16,5 @@ export const handleServerNetworkError = (error: AxiosError, dispatch: Dispatch<S
     console.log(error.message)
     dispatch(setAppError(error ? error.message : 'Some error occurred'))
     dispatch(setAppStatus('failed'))
-    // dispatch(setAppError({error: error.message}))
-    // dispatch(setAppStatus({status: 'failed'}))
+
 }

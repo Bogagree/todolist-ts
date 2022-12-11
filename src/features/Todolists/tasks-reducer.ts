@@ -3,7 +3,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI} from '../../api/to
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
 import {setAppError, SetAppErrorActionType, setAppStatus, SetAppStatusActionType} from '../../app/app-reducer';
-import {handelServerAppError} from '../../utils/error-utils';
+import {handelServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 
 const initialState: TasksStateType = {}
 
@@ -61,14 +61,14 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) => ({type: 'SE
 
 //thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatus({status: 'loading'}))
+    dispatch(setAppStatus('loading'))
     todolistsAPI.getTasks(todolistId)
         .then((res) => {
             dispatch(setTasksAC(todolistId, res.data.items))
-            dispatch(setAppStatus({status: 'succeeded'}))
+            dispatch(setAppStatus('succeeded'))
         }).catch((error) => {
-        dispatch(setAppError({error: error.message}))
-        dispatch(setAppStatus({status: 'failed'}))
+        dispatch(setAppError(error.message))
+        dispatch(setAppStatus('failed'))
     })
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch<ActionsType>) => {
@@ -81,8 +81,7 @@ export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: D
             }
         })
         .catch((error) => {
-            dispatch(setAppError({error: error.message}))
-            dispatch(setAppStatus({status: 'failed'}))
+            handleServerNetworkError(error, dispatch)
         })
 }
 // для примера написал санку на try/catch пока не буду удалять,
@@ -99,23 +98,23 @@ export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: D
 //     }
 // }
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatus({status: 'loading'}))
+    dispatch(setAppStatus('loading'))
     todolistsAPI.createTask(todolistId, title)
         .then((res) => {
             if (res.data.resultCode === 0) {
                 dispatch(addTaskAC(res.data.data.item))
-                dispatch(setAppStatus({status: 'succeeded'}))
+                dispatch(setAppStatus('succeeded'))
             } else {
                 handelServerAppError(res.data, dispatch)
             }
         })
         .catch((error) => {
-            dispatch(setAppError({error: error.message}))
-            dispatch(setAppStatus({status: 'failed'}))
+            dispatch(setAppError(error.message))
+            dispatch(setAppStatus('failed'))
         })
 }
 export const updateTasksTC = (todolistId: string, taskId: string, domainModel: UpdateTaskDomaineModelType) => (dispatch: ThunkDispatchType, getState: () => AppRootStateType) => {
-    dispatch(setAppStatus({status: 'loading'}))
+    dispatch(setAppStatus('loading'))
     const task = getState().tasks[todolistId].find(t => t.id === taskId)
     // тут беру метод find а не filter потому что нужно взять первое значение, filter пойдет до конца массива лишняя операция
     if (task) {
@@ -132,8 +131,8 @@ export const updateTasksTC = (todolistId: string, taskId: string, domainModel: U
             })
             .catch((error) => {
                 // handleServerNetworkError(error, dispatch)
-                dispatch(setAppError({error: error.message}))
-                dispatch(setAppStatus({status: 'failed'}))
+                dispatch(setAppError(error.message))
+                dispatch(setAppStatus('failed'))
             })
     }
 }

@@ -22,19 +22,19 @@ export const setIsLoggedIn = (isLoggedIn: boolean) => ({type: 'AUTH/SET-IS-LOGGE
 
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: ThunkDispatch) => {
-    dispatch(setAppStatus({status: 'loading'}))
+    dispatch(setAppStatus('loading'))
     authAPI.login(data)
         .then((res) => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedIn(true))
-                dispatch(setAppStatus({status: 'succeeded'}))
+                dispatch(setAppStatus('succeeded'))
             } else {
                 handelServerAppError(res.data, dispatch)
             }
         })
         .catch((error) => {
-            dispatch(setAppError({error: error.message}))
-            dispatch(setAppStatus({status: 'failed'}))
+            dispatch(setAppError(error.message))
+            dispatch(setAppStatus('failed'))
         })
 }
 

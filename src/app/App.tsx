@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,15 +9,27 @@ import Container from '@mui/material/Container';
 import {Menu} from '@mui/icons-material';
 import {TodolistsList} from "../features/Todolists/TodolistsList";
 import {Route, Routes} from 'react-router-dom';
-import {LinearProgress} from '@mui/material';
+import {CircularProgress, LinearProgress} from '@mui/material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 import {useAppSelector} from './store';
 import {Login} from '../features/Login/Login';
+import {useDispatch} from 'react-redux';
+import {initialiseAppTC} from './app-reducer';
 
 
 function App() {
 
     const status = useAppSelector(state => state.app.status)
+    const isInitialised = useAppSelector(state => state.app.isInitialised)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(initialiseAppTC())
+    }, [dispatch])
+
+    if (!isInitialised) {
+        return <div style={{position: 'absolute', top: '30%', right: '50%'}}><CircularProgress/></div>
+    }
 
     return (
         <div className="App">
