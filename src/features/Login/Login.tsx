@@ -36,7 +36,6 @@ export const Login = () => {
             }
         },
         onSubmit: values => {
-            // alert(JSON.stringify(values));
             dispatch(loginTC(values))
         },
     });

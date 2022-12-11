@@ -109,8 +109,7 @@ export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispa
             }
         })
         .catch((error) => {
-            dispatch(setAppError(error.message))
-            dispatch(setAppStatus('failed'))
+            handleServerNetworkError(error, dispatch)
         })
 }
 export const updateTasksTC = (todolistId: string, taskId: string, domainModel: UpdateTaskDomaineModelType) => (dispatch: ThunkDispatchType, getState: () => AppRootStateType) => {

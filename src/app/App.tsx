@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import './App.css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,42 +9,52 @@ import Container from '@mui/material/Container';
 import {Menu} from '@mui/icons-material';
 import {TodolistsList} from "../features/Todolists/TodolistsList";
 import {Route, Routes} from 'react-router-dom';
-import {CircularProgress, LinearProgress} from '@mui/material';
+import {Box, CircularProgress, LinearProgress} from '@mui/material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 import {useAppSelector} from './store';
 import {Login} from '../features/Login/Login';
 import {useDispatch} from 'react-redux';
 import {initialiseAppTC} from './app-reducer';
+import {logoutTC} from '../features/Login/auth-reducer';
 
 
 function App() {
 
     const status = useAppSelector(state => state.app.status)
     const isInitialised = useAppSelector(state => state.app.isInitialised)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(initialiseAppTC())
     }, [dispatch])
 
+    const logOutHandler = useCallback(() => {
+        dispatch(logoutTC())
+    }, [dispatch]);
+
     if (!isInitialised) {
         return <div style={{position: 'absolute', top: '30%', right: '50%'}}><CircularProgress/></div>
+
     }
 
     return (
         <div className="App">
             <ErrorSnackbar/>
             <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        News
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-                {status === 'loading' && <LinearProgress/>}
+                <Box>
+                    <Toolbar>
+                        <IconButton edge="start" color="inherit" aria-label="menu">
+                            <Menu/>
+                        </IconButton>
+                        <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                            News
+                        </Typography>
+                        {isLoggedIn && <Button color="inherit" onClick={logOutHandler}>Log out</Button>}
+                    </Toolbar>
+                    {status === 'loading' && <LinearProgress/>}
+                </Box>
             </AppBar>
             <Container fixed>
                 <Routes>

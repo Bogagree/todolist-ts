@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux';
 import {authAPI, LoginParamsType} from '../../api/todolists-api';
-import {setAppError, SetAppErrorActionType, setAppStatus, SetAppStatusActionType} from '../../app/app-reducer';
-import {handelServerAppError} from '../../utils/error-utils';
+import {SetAppErrorActionType, setAppStatus, SetAppStatusActionType} from '../../app/app-reducer';
+import {handelServerAppError, handleServerNetworkError} from '../../utils/error-utils';
 
 const initialState: authInitialStateType = {
     isLoggedIn: false,
@@ -33,8 +33,23 @@ export const loginTC = (data: LoginParamsType) => (dispatch: ThunkDispatch) => {
             }
         })
         .catch((error) => {
-            dispatch(setAppError(error.message))
-            dispatch(setAppStatus('failed'))
+            handleServerNetworkError(error, dispatch)
+        })
+}
+
+export const logoutTC = () => (dispatch: ThunkDispatch) => {
+    dispatch(setAppStatus('loading'))
+    authAPI.logout()
+        .then((res) => {
+            if (res.data.resultCode === 0) {
+                dispatch(setIsLoggedIn(false))
+                dispatch(setAppStatus('succeeded'))
+            } else {
+                handelServerAppError(res.data, dispatch)
+            }
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
         })
 }
 
