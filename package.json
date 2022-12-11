@@ -1,6 +1,6 @@
 {
   "name": "it-incubator-todolist-ts",
-  "homepage": "https://bogagree.github.io/todolist-ts/",
+  "homepage": "https://bogagree.github.io/todolist-ts",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

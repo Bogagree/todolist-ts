@@ -36,17 +36,13 @@ export const todolistsAPI = {
     }
 }
 
-export type LoginParamsType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha?: string
-}
 
 export const authAPI = {
     login(data: LoginParamsType) {
-        const promise = instance.post<LoginParamsType, ResponseType<{ userId?: number }>>('auth/login', data);
-        return promise
+        return instance.post<LoginParamsType, AxiosResponse<ResponseType<{ userId?: number }>>>('auth/login', data);
+    },
+    me() {
+
     }
 }
 
@@ -56,6 +52,13 @@ export type TodolistType = {
     title: string
     addedDate: string
     order: number
+}
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
 
 export type ResponseType<D = {}> = {

@@ -3,7 +3,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI} from '../../api/to
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
 import {setAppError, SetAppErrorActionType, setAppStatus, SetAppStatusActionType} from '../../app/app-reducer';
-import {handelServerAppError, handleServerNetworkError} from '../../utils/error-utils';
+import {handelServerAppError} from '../../utils/error-utils';
 
 const initialState: TasksStateType = {}
 
@@ -114,7 +114,7 @@ export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispa
             dispatch(setAppStatus({status: 'failed'}))
         })
 }
-export const updateTasksTC = (todolistId: string, taskId: string, domainModel: UpdateTaskDomaineModelType) => (dispatch: Dispatch<ActionsType>, getState: () => AppRootStateType) => {
+export const updateTasksTC = (todolistId: string, taskId: string, domainModel: UpdateTaskDomaineModelType) => (dispatch: ThunkDispatchType, getState: () => AppRootStateType) => {
     dispatch(setAppStatus({status: 'loading'}))
     const task = getState().tasks[todolistId].find(t => t.id === taskId)
     // тут беру метод find а не filter потому что нужно взять первое значение, filter пойдет до конца массива лишняя операция
@@ -182,3 +182,7 @@ type ActionsType = RemoveTaskActionType | AddTaskActionType
     | ReturnType<typeof setTasksAC>
     | SetAppErrorActionType
     | SetAppStatusActionType
+
+type ThunkDispatchType = Dispatch<ActionsType
+    | SetAppErrorActionType
+    | SetAppStatusActionType>

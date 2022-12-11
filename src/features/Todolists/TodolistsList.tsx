@@ -23,7 +23,7 @@ export const TodolistsList: React.FC = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchTodolists)
+        dispatch(fetchTodolists())
     }, [dispatch])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {

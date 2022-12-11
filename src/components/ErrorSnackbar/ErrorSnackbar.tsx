@@ -10,8 +10,6 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref,)
 });
 
 export function ErrorSnackbar() {
-    // const [open, setOpen] = useState(true);
-
     const error = useAppSelector(state => state.app.error)
     const dispatch = useDispatch()
 
@@ -22,7 +20,6 @@ export function ErrorSnackbar() {
             return;
         }
         dispatch(setAppError({error: null}))
-        // setOpen(false);
     };
 
     return (

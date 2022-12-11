@@ -8,11 +8,11 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import {Menu} from '@mui/icons-material';
 import {TodolistsList} from "../features/Todolists/TodolistsList";
-import {BrowserRouter, HashRouter, Route, Routes} from 'react-router-dom';
-import {Login} from '../features/Login/Login';
+import {Route, Routes} from 'react-router-dom';
 import {LinearProgress} from '@mui/material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar';
 import {useAppSelector} from './store';
+import {Login} from '../features/Login/Login';
 
 
 function App() {
@@ -20,30 +20,28 @@ function App() {
     const status = useAppSelector(state => state.app.status)
 
     return (
-        <BrowserRouter>
-            <div className="App">
-                <ErrorSnackbar/>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="menu">
-                            <Menu/>
-                        </IconButton>
-                        <Typography variant="h6">
-                            News
-                        </Typography>
-                        <Button color="inherit">Login</Button>
-                    </Toolbar>
-                    {status === 'loading' && <LinearProgress/>}
-                </AppBar>
-                <Container fixed>
-                    <Routes>
-                        <Route path={"/login"} element={<Login/>}/>
-                        <Route path={"/"} element={<TodolistsList/>}/>
-                        <Route path={'*'} element={<h1>404: PAGE NOT FOUND</h1>}/>
-                    </Routes>
-                </Container>
-            </div>
-        </BrowserRouter>
+        <div className="App">
+            <ErrorSnackbar/>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h6">
+                        News
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+                {status === 'loading' && <LinearProgress/>}
+            </AppBar>
+            <Container fixed>
+                <Routes>
+                    <Route path={'login'} element={<Login/>}/>
+                    <Route path={'/'} element={<TodolistsList/>}/>
+                    <Route path={'*'} element={<h1>404: PAGE NOT FOUND</h1>}/>
+                </Routes>
+            </Container>
+        </div>
     );
 }
 
