@@ -3,8 +3,9 @@ import {todolistsReducer} from '../features/Todolists/todolists-reducer';
 import {applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
 import thunkMiddleware from "redux-thunk";
 import {appReducer} from './app-reducer';
-import {TypedUseSelectorHook, useSelector} from 'react-redux';
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 import {authReducer} from '../features/Login/auth-reducer';
+import {configureStore} from '@reduxjs/toolkit';
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
@@ -13,28 +14,20 @@ const rootReducer = combineReducers({
     auth: authReducer
 })
 
-// export const store = configureStore({
-//     reducer: rootReducer,
-//     middleware: (getDefaultMiddleware) =>
-//         getDefaultMiddleware()
-//             .prepend(
-//                 // correctly typed middlewares can just be used
-//                 additionalMiddleware,
-//                 // you can also type middlewares manually
-//                 untypedMiddleware as Middleware<
-//                     (action: Action<'specialAction'>) => number,
-//                     RootState
-//                     >
-//             )
-//             // prepend and concat calls can be chained
-//             .concat(logger),
-// })
-// })
+// redux-toolkit
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().prepend(thunkMiddleware)
+})
 
-export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+//у export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
+
+export type AppDispatch = typeof store.dispatch
+export const useAppDispatch: () => AppDispatch = useDispatch
 
 // @ts-ignore
 window.store = store;
