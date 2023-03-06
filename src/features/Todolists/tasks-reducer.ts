@@ -61,14 +61,14 @@ export const setTasksAC = (todolistId: string, tasks: TaskType[]) => ({type: 'SE
 
 //thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     todolistsAPI.getTasks(todolistId)
         .then((res) => {
             dispatch(setTasksAC(todolistId, res.data.items))
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus({status: 'succeeded'}))
         }).catch((error) => {
         dispatch(setAppError(error.message))
-        dispatch(setAppStatus('failed'))
+        dispatch(setAppStatus({status: 'failed'}))
     })
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch<ActionsType>) => {
@@ -84,26 +84,15 @@ export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: D
             handleServerNetworkError(error, dispatch)
         })
 }
-// для примера написал санку на try/catch пока не буду удалять,
-// export const removeTaskTC = (todolistId:string, taskId:string) => async (dispatch: Dispatch) => {
-//     try{
-//         const response = await todolistsAPI.deleteTask(todolistId, taskId)
-//      if    (response.data.resultCode === 0 ) {
-//          dispatch(removeTaskAC(taskId, todolistId))
-//      }
-//     } catch (e) {
-//         console.log(e)
-//     } finally {
-//
-//     }
-// }
+
+
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     todolistsAPI.createTask(todolistId, title)
         .then((res) => {
             if (res.data.resultCode === 0) {
                 dispatch(addTaskAC(res.data.data.item))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status: 'succeeded'}))
             } else {
                 handelServerAppError(res.data, dispatch)
             }
@@ -113,7 +102,7 @@ export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispa
         })
 }
 export const updateTasksTC = (todolistId: string, taskId: string, domainModel: UpdateTaskDomaineModelType) => (dispatch: ThunkDispatchType, getState: () => AppRootStateType) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     const task = getState().tasks[todolistId].find(t => t.id === taskId)
     // тут беру метод find а не filter потому что нужно взять первое значение, filter пойдет до конца массива лишняя операция
     if (task) {
@@ -131,7 +120,7 @@ export const updateTasksTC = (todolistId: string, taskId: string, domainModel: U
             .catch((error) => {
                 // handleServerNetworkError(error, dispatch)
                 dispatch(setAppError(error.message))
-                dispatch(setAppStatus('failed'))
+                dispatch(setAppStatus({status: 'failed'}))
             })
     }
 }

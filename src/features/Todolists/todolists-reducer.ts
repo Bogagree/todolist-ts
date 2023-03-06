@@ -52,11 +52,11 @@ export const changeTodoEntityStatusAC = (id: string, entityStatus: RequestStatus
 //thunks
 export const fetchTodolists = () => {
     return (dispatch: ThunkDispatch) => {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status:'loading'}))
         todolistsAPI.getTodolists()
             .then((res) => {
                 dispatch(setTodolistAC(res.data))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status:'succeeded'}))
             })
             .catch(error => {
                 handleServerNetworkError(error, dispatch)
@@ -65,13 +65,13 @@ export const fetchTodolists = () => {
 }
 
 export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status:'loading'}))
     dispatch(changeTodoEntityStatusAC(id, 'loading'))
     todolistsAPI.deleteTodolist(id)
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(removeTodolistAC(id))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status:'succeeded'}))
             }
         })
         .catch((error) => {
@@ -79,12 +79,12 @@ export const removeTodolistTC = (id: string) => (dispatch: Dispatch) => {
         })
 }
 export const createTodolistTC = (title: string) => (dispatch: Dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status:'loading'}))
     todolistsAPI.createTodolist(title)
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(createTodolistAC(res.data.data.item))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status:'succeeded'}))
             }
         })
         .catch((error) => {

@@ -5,16 +5,16 @@ import {AxiosError} from 'axios';
 
 export const handelServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatch) => {
     if (data.messages.length) {
-        dispatch(setAppError(data.messages[0]))
+        dispatch(setAppError({error: data.messages[0]}))
     } else {
-        dispatch(setAppError('Some error occurred'))
+        dispatch(setAppError({error: 'Some error occurred'}))
     }
-    dispatch(setAppStatus('failed'))
+    dispatch(setAppStatus({status: 'failed'}))
 }
 
 export const handleServerNetworkError = (error: AxiosError, dispatch: Dispatch<SetAppErrorActionType | SetAppStatusActionType>) => {
     console.log(error.message)
-    dispatch(setAppError(error ? error.message : 'Some error occurred'))
-    dispatch(setAppStatus('failed'))
+    dispatch(setAppError({error: error ? error.message : 'Some error occurred'}))
+    dispatch(setAppStatus({status: 'failed'}))
 
 }

@@ -1,6 +1,6 @@
 import {tasksReducer} from '../features/Todolists/tasks-reducer';
 import {todolistsReducer} from '../features/Todolists/todolists-reducer';
-import {applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
+import {combineReducers} from 'redux';
 import thunkMiddleware from "redux-thunk";
 import {appReducer} from './app-reducer';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
@@ -21,7 +21,6 @@ export const store = configureStore({
         getDefaultMiddleware().prepend(thunkMiddleware)
 })
 
-//у export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
